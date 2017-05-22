@@ -1,10 +1,14 @@
-
+from Utilities import UISearchBarWrapper
 import ui
 
+tv = ui.TableView()
 class DocsetListView (object):
 	def __init__(self, docsets, cheatsheets, usercontributed, docset_selected_callback, cheatsheet_selected_callback, usercontributed_selected_callback):
+		self.keepDocsets = docsets
 		self.docsets = docsets
+		self.keepCheatsheets = cheatsheets
 		self.cheatsheets = cheatsheets
+		self.keepUsercontributed = usercontributed
 		self.usercontributed = usercontributed
 		self.docset_selected_callback = docset_selected_callback
 		self.cheatsheet_selected_callback = cheatsheet_selected_callback
@@ -68,29 +72,58 @@ class DocsetListView (object):
 		if len(self.docsets) > 0:
 			self.docsetSection = self.numberOfSections
 			self.numberOfSections = self.numberOfSections + 1
+		else:
+			self.docsetSection = -1
 		if len(self.cheatsheets) > 0:
 			self.cheatsheetSection = self.numberOfSections
 			self.numberOfSections = self.numberOfSections + 1
+		else:
+			self.cheatsheetSection = -1
 		if len(self.usercontributed) > 0:
 			self.usercontributedSection = self.numberOfSections
 			self.numberOfSections = self.numberOfSections + 1
+		else:
+			self.usercontributedSection = -1
 	
-tv = ui.TableView()
+	def filterData(self, text):
+		if text == '':
+			self.docsets = self.keepDocsets
+			self.cheatsheets = self.keepCheatsheets
+			self.usercontributed = self.keepUsercontributed
+		else:
+			doc = []
+			for d in self.keepDocsets:
+				if(d['name'].lower().find(str(text).lower())>-1):
+					doc.append(d)
+			self.docsets = doc
+			che = []
+			for c in self.keepCheatsheets:
+				if(c.name.lower().find(str(text).lower())>-1):
+					che.append(c)
+			self.cheatsheets = che
+			use = []
+			for u in self.keepUsercontributed:
+				if(u.name.lower().find(str(text).lower())>-1):
+					use.append(u)
+			self.usercontributed = use
+		tv.reload()
+
 def get_view(docsets, cheatsheets, usercontributed, docset_selected_callback, cheatsheet_selected_callback, usercontrobuted_selected_callback):
-	w,h = ui.get_screen_size()
-	tv.width = w
-	tv.height = h
 	tv.flex = 'WH'
 	tv.name = 'PyDoc'
 	data = DocsetListView(docsets, cheatsheets, usercontributed, docset_selected_callback, cheatsheet_selected_callback, usercontrobuted_selected_callback)
 	tv.delegate = data
 	tv.data_source = data
-	return tv
+	v = UISearchBarWrapper.get_view(tv, data.filterData)
+	return v
 
 def refresh_view(docsets, cheatsheets, usercontributed):
 	tv.data_source.docsets = docsets
+	tv.data_source.keepDocsets = docsets
 	tv.data_source.cheatsheets = cheatsheets
+	tv.data_source.keepCheatsheets = cheatsheets
 	tv.data_source.usercontributed = usercontributed
+	tv.data_source.keepUsercontributed = usercontributed
 	tv.reload_data()
 	tv.reload()
 	
