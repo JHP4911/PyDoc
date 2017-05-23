@@ -17,6 +17,7 @@ class DocsetListView (object):
 		self.cheatsheetSection = -1
 		self.usercontributedSection = -1
 		self.numberOfSections = 0
+		self.searchText = ''
 	
 		
 	def tableview_did_select(self, tableview, section, row):
@@ -86,6 +87,7 @@ class DocsetListView (object):
 			self.usercontributedSection = -1
 	
 	def filterData(self, text):
+		self.searchText = text
 		if text == '':
 			self.docsets = self.keepDocsets
 			self.cheatsheets = self.keepCheatsheets
@@ -118,12 +120,13 @@ def get_view(docsets, cheatsheets, usercontributed, docset_selected_callback, ch
 	return v
 
 def refresh_view(docsets, cheatsheets, usercontributed):
-	tv.data_source.docsets = docsets
+	#tv.data_source.docsets = docsets
 	tv.data_source.keepDocsets = docsets
-	tv.data_source.cheatsheets = cheatsheets
+	#tv.data_source.cheatsheets = cheatsheets
 	tv.data_source.keepCheatsheets = cheatsheets
-	tv.data_source.usercontributed = usercontributed
+	#tv.data_source.usercontributed = usercontributed
 	tv.data_source.keepUsercontributed = usercontributed
+	tv.data_source.filterData(tv.data_source.searchText)
 	tv.reload_data()
 	tv.reload()
 	
