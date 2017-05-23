@@ -77,7 +77,8 @@ class SearchTableView(ui.View):
 	def __init__(self, tableView, filterData, *args, **kwargs):
 		ui.View.__init__(self, *args, **kwargs)
 		frame = CGRect(CGPoint(0, 0), CGSize(self.width, self.height))
-		self.tableView = ObjCInstance(tableView)
+		self.tv = tableView
+		self.tableView = ObjCInstance(self.tv)
 		flex_width, flex_height = (1<<1), (1<<4)
 		self.tableView.setAutoresizingMask_(flex_width|flex_height)
 		sd = createSearchDelegateClass()
