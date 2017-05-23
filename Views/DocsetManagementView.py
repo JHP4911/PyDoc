@@ -1,8 +1,9 @@
 import ui
-
+from Utilities import UISearchBarWrapper
 class DocsetManagementView (object):
 	def __init__(self, docsets, download_action, refresh_docsets_action, delete_action,refresh_main_view):
 		self.data = docsets
+		self.keepData = docsets
 		self.download_action = download_action
 		self.refresh_docsets_action = refresh_docsets_action
 		self.delete_action = delete_action
@@ -69,6 +70,17 @@ class DocsetManagementView (object):
 				
 	def refresh(self):
 		tv.reload()
+	
+	def filterData(self, text):
+		if text == '':
+			self.data = self.keepData
+		else:
+			doc = []
+			for d in self.keepData:
+				if(d['name'].lower().find(str(text).lower())>-1):
+					doc.append(d)
+			self.data = doc
+		self.refresh()
 		
 class CustomAction(object):
 	def __init__(self, parent):
@@ -85,17 +97,16 @@ class CustomAction(object):
 tv = ui.TableView()
 def get_view(docsets, download_action, refresh_docsets_action, delete_action, refresh_main_view):
 	w,h = ui.get_screen_size()
-	tv.width = w
-	tv.height = h
 	tv.flex = 'WH'
 	tv.name = 'Docsets'
 	data = DocsetManagementView(docsets, download_action, refresh_docsets_action, delete_action, refresh_main_view)
 	tv.delegate = data
 	tv.data_source = data
-	return tv
+	v = UISearchBarWrapper.get_view(tv, data.filterData)
+	return v
 	
 def refresh_view(data):
-	tv.data_source.data = data
+	tv.data_source.keepData = data
 	tv.reload_data()
 
 if __name__ == '__main__':

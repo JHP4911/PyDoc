@@ -57,8 +57,9 @@ class PyDoc(object):
 		self.navigation_view.push_view(self.docset_management_view)
 		
 	def show_cheatsheetmanagement_view(self):
-		self.cheatsheet_management_view.data_source.data = self.cheatsheet_manager.getAvailableCheatsheets()
-		self.cheatsheet_management_view.reload()
+		cs = self.cheatsheet_manager.getAvailableCheatsheets()
+		self.cheatsheet_management_view.tv.data_source.keepData = cs
+		self.cheatsheet_management_view.tv.data_source.refresh()
 		self.navigation_view.push_view(self.cheatsheet_management_view)
 		console.hide_activity()
 		
@@ -66,8 +67,9 @@ class PyDoc(object):
 		return UserContributedManagementView.get_view(self.usercontributed_manager.downloadUserContributed, self.refresh_main_view_data, self.usercontributed_manager.deleteUserContributed, self.usercontributed_manager.getAvailableUserContributed)
 		
 	def show_usercontributedmanagement_view(self):
-		self.usercontributed_management_view.data_source.data = self.usercontributed_manager.getAvailableUserContributed()
-		self.usercontributed_management_view.reload()
+		uc = self.usercontributed_manager.getAvailableUserContributed()
+		self.usercontributed_management_view.tv.data_source.keepData = uc
+		self.usercontributed_management_view.tv.data_source.refresh()
 		self.navigation_view.push_view(self.usercontributed_management_view)
 		console.hide_activity()
 		
