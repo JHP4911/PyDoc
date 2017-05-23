@@ -86,7 +86,7 @@ class PyDoc(object):
 	
 	def docset_type_selected_for_viewing(self, docset, type):
 		indexes = self.docset_manager.getIndexesbyTypeForDocset(docset, type)
-		view = DocsetIndexView.get_view(docset, indexes, self.docset_index_selected_for_viewing, 'docset')
+		view = DocsetIndexView.get_view(docset, indexes, self.docset_index_selected_for_viewing, 'docset', self.docset_manager.getIndexesbyTypeAndNameForDocset, type)
 		self.navigation_view.push_view(view)
 	
 	def cheatsheet_selected_for_viewing(self, cheatsheet):
