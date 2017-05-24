@@ -96,7 +96,7 @@ class PyDoc(object):
 	
 	def cheatsheet_type_selected_for_viewing(self, cheatsheet, type):
 		indexes = self.cheatsheet_manager.getIndexesbyTypeForCheatsheet(cheatsheet, type)
-		view = DocsetIndexView.get_view(cheatsheet, indexes, self.docset_index_selected_for_viewing, 'cheatsheet')
+		view = DocsetIndexView.get_view(cheatsheet, indexes, self.docset_index_selected_for_viewing, 'cheatsheet', self.cheatsheet_manager.getIndexesbyNameForDocset, type)
 		self.navigation_view.push_view(view)
 		
 	def usercontributed_selected_for_viewing(self, usercontributed):
@@ -106,7 +106,7 @@ class PyDoc(object):
 	
 	def usercontributed_type_selected_for_viewing(self, usercontributed, type):
 		indexes = self.usercontributed_manager.getIndexesbyTypeForUserContributed(usercontributed, type)
-		view = DocsetIndexView.get_view(usercontributed, indexes, self.docset_index_selected_for_viewing, 'usercontributed')
+		view = DocsetIndexView.get_view(usercontributed, indexes, self.docset_index_selected_for_viewing, 'usercontributed', self.usercontributed_manager.getIndexesbyTypeAndNameForUserContributed, type)
 		self.navigation_view.push_view(view)
 		
 	def docset_index_selected_for_viewing(self, url):
