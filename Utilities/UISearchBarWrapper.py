@@ -84,7 +84,7 @@ class SearchTableView(ui.View):
 		sd = createSearchDelegateClass()
 		self.searchDelegate = sd.alloc().init().autorelease()
 		self.searchDelegate.filt = filterData
-		searchBar = UISearchBar.alloc().init();
+		searchBar = UISearchBar.alloc().init()
 		searchBar.setPlaceholder_(ns('Search'))
 		searchBar.setDelegate_(self.searchDelegate)
 		#searchBar.setShowsBookmarkButton_(ns(True))
@@ -93,8 +93,8 @@ class SearchTableView(ui.View):
 		#searchBar.setScopeButtonTitles_(ns(['test1','hi']))
 		#searchBar.setShowsScopeBar(ns(True))
 		
-		self.tableView.setTableHeaderView_(searchBar);
-		searchBar.sizeToFit();
+		self.tableView.setTableHeaderView_(searchBar)
+		searchBar.sizeToFit()
 		
 		self_objc = ObjCInstance(self)
 		self_objc.addSubview_(self.tableView)
